@@ -5,20 +5,19 @@ from datetime import datetime, timedelta
 class Vip(db.Model):
     __tablename__ = 'vip'
     vip_level = db.Column(db.Integer, primary_key=True)
-    vip_updateRoom = db.Column(db.Integer, nullable=False, default=0, check_constraint='vip_updateRoom IN (0, 1)')
-    vip_gift = db.Column(db.Integer, nullable=False, default=0, check_constraint='vip_gift IN (0, 1)')
-    vip_discount = db.Column(db.Numeric(2, 1), nullable=False, default=1, check_constraint='vip_discount >= 0 AND vip_discount <= 1')
+    vip_updateRoom = db.Column(db.Integer, nullable=False, default=0,)
+    vip_gift = db.Column(db.Integer, nullable=False, default=0)
+    vip_discount = db.Column(db.Numeric(2, 1), nullable=False, default=1)
 
 class User(db.Model):
     __tablename__ = 'user'
     user_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     user_name = db.Column(db.String(20), nullable=False)
-    user_credit = db.Column(db.String(18), nullable=False)
+    user_credit = db.Column(db.String(18), nullable=False, primary_key=True)
     user_phone = db.Column(db.String(11))
     user_address = db.Column(db.String(50))
     vip_level = db.Column(db.Integer, db.ForeignKey('vip.vip_level'))
     user_password = db.Column(db.String(20))
-    __table_args__ = (db.PrimaryKeyConstraint('user_id', 'user_credit'),)
 
 class Admin(db.Model):
     __tablename__ = 'admin'

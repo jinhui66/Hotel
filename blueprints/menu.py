@@ -14,10 +14,7 @@ bp = Blueprint('menu',__name__,url_prefix="/")
 
 @bp.route('/login',methods=['GET','POST'])
 def login():
-    if request.method=='GET':
-        return render_template('login.html')
-    if request.method=='POST':
-        pass
+    return render_template('login.html')
 
 @bp.route('/login_action',methods=['GET','POST'])
 def login_action():
@@ -26,10 +23,7 @@ def login_action():
 
 @bp.route('/',methods=['GET','POST'])
 def menu():
-    if request.method == 'POST':
-        return render_template('index.html')
-    if request.method == 'GET':
-        return render_template('index.html')
+    return render_template('index.html')
 
 
 @bp.route('/logout',methods=['GET','POST'])
