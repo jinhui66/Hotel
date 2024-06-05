@@ -4,6 +4,7 @@ from exts import db,mail
 from flask_migrate import Migrate
 from blueprints.menu import bp as menu_bp
 import os
+from models.table import User, Admin
 # import torch
 
 # 启动
@@ -28,32 +29,25 @@ app.register_blueprint(menu_bp)
 # with app.app_context():
 #     db.create_all()
 
-# @app.before_request
-# def my_before_request():
-#     user_id = session.get('user_id')
-#     type = session.get('type')
-#     if user_id and type == 'user':
-#         user = User.query.filter_by(id=user_id).first()
-#         setattr(g,'user',user)
-#         setattr(g,'type','user')
-#     elif user_id and type == 'admin':
-#         admin = Admin.query.filter_by(id=user_id).first()
-#         setattr(g,'user',admin)
-#         setattr(g,'type','admin')
-#     else:
-#         setattr(g,'user',None)
-#         setattr(g,'type',None)
+@app.before_request
+def my_before_request():
+    user_id = session.get('user_id')
+    type = session.get('type')
+    if user_id and type == 'user':
+        user = User.query.filter_by(id=user_id).first()
+        setattr(g,'user',user)
+        setattr(g,'type','user')
+    elif user_id and type == 'admin':
+        admin = Admin.query.filter_by(id=user_id).first()
+        setattr(g,'user',admin)
+        setattr(g,'type','admin')
+    else:
+        setattr(g,'user',None)
+        setattr(g,'type',None)
 
-#     position_id = session.get('position_id')
-#     if position_id:
-#         position = Position.query.filter_by(id=position_id).first()
-#         setattr(g,'position',position)
-#     else:
-#         setattr(g,'position',None)
-
-# @app.context_processor
-# def my_context_porcessor():
-#     return {'user':g.user,'type':g.type}
+@app.context_processor
+def my_context_porcessor():
+    return {'user':g.user,'type':g.type}
 
 if __name__ == '__main__':
     app.run(debug=True,host='127.0.0.1')
