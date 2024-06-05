@@ -1,148 +1,73 @@
-from exts import db  
+from exts import db
 from datetime import datetime, timedelta
 
-# 创建模型  
-class User(db.Model):  
-    __tablename__ = 'User'  
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)  
-    username = db.Column(db.String(15), nullable=False)  # 用户名唯一  
-    password = db.Column(db.String(100), nullable=False)  
-    email = db.Column(db.String(100), unique=True, nullable=False)  
-    
-    filepath = db.Column(db.String(255), nullable=True)
-    
-    # 定义反向关系  
-    resume = db.relationship('Resume', backref='user', lazy='dynamic') 
-    comment = db.relationship('Comment', backref='user', lazy='dynamic') 
-    send_resume = db.relationship('Send_resume', backref='user', lazy='dynamic') 
-  
-class Resume(db.Model):  
-    __tablename__ = 'Resume'    
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)  
-    name = db.Column(db.String(15), nullable=True)
-    age = db.Column(db.Integer, nullable=True)
-    expect_position = db.Column(db.String(30), nullable=True)
-    gender = db.Column(db.String(30), nullable=True)
-    marriage = db.Column(db.String(5), nullable=True)
-    phone = db.Column(db.Text(), nullable=True)
-    expect_salary = db.Column(db.Integer, nullable=True)
-    email = db.Column(db.Text(), nullable=True)
-    expect_address = db.Column(db.String(30), nullable=True)
-    
-    education = db.Column(db.Text, nullable=True)
-    experience = db.Column(db.Text, nullable=True)
-    abilities = db.Column(db.Text, nullable=True)
-    about_me = db.Column(db.Text, nullable=True)
-        
-    filepath = db.Column(db.String(255), nullable=True)  
+# 创建模型
+class Vip(db.Model):
+    __tablename__ = 'vip'
+    vip_level = db.Column(db.Integer, primary_key=True)
+    vip_updateRoom = db.Column(db.Integer, nullable=False, default=0, check_constraint='vip_updateRoom IN (0, 1)')
+    vip_gift = db.Column(db.Integer, nullable=False, default=0, check_constraint='vip_gift IN (0, 1)')
+    vip_discount = db.Column(db.Numeric(2, 1), nullable=False, default=1, check_constraint='vip_discount >= 0 AND vip_discount <= 1')
 
-    # 添加外键列  
-    user_id = db.Column(db.Integer, db.ForeignKey(User.id), nullable=False)  
-    
+class User(db.Model):
+    __tablename__ = 'user'
+    user_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    user_name = db.Column(db.String(20), nullable=False)
+    user_credit = db.Column(db.String(18), nullable=False)
+    user_phone = db.Column(db.String(11))
+    user_address = db.Column(db.String(50))
+    vip_level = db.Column(db.Integer, db.ForeignKey('vip.vip_level'))
+    user_password = db.Column(db.String(20))
+    __table_args__ = (db.PrimaryKeyConstraint('user_id', 'user_credit'),)
+
 class Admin(db.Model):
-    __tablename__ = 'Admin'
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)  
-    username = db.Column(db.String(15), nullable=False)  # 用户名唯一  
-    password = db.Column(db.String(100), nullable=False)  
-    email = db.Column(db.String(100), unique=True, nullable=False)  
-    
-    filepath = db.Column(db.String(255), nullable=True)
-    # 定义反向关系  
-    position = db.relationship('Position', backref='admin', lazy='dynamic') 
-    
-    def to_dict(self):  
-        return {"id": self.id, "username": self.username,"email":self.email,"filepath":self.filepath}  
+    __tablename__ = 'admin'
+    admin_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    admin_name = db.Column(db.String(20), nullable=False)
+    admin_phone = db.Column(db.String(11))
+    admin_password = db.Column(db.String(20), nullable=False)
 
-class Position(db.Model):
-    __tablename__ = 'Position'
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    release_time = db.Column(db.DateTime, nullable=False, default=lambda:datetime.utcnow() + timedelta(hours=8))
-    company = db.Column(db.String(300), nullable=False)
-    position_name = db.Column(db.String(300), nullable=False)
-    salary = db.Column(db.String(150), nullable=False)
-    education = db.Column(db.String(150), nullable=False)
-    description = db.Column(db.Text, nullable=False)
-    address = db.Column(db.String(300), nullable=False)
-    
-    admin_id = db.Column(db.Integer, db.ForeignKey(Admin.id), nullable=False)
-    
-    public = db.Column(db.Integer, nullable=False, default=1)
-    
-    send_resume =db.relationship('Send_resume',backref='position',lazy='dynamic')
-    comment = db.relationship('Comment', backref='position', lazy='dynamic')
+class RoomType(db.Model):
+    __tablename__ = 'room_type'
+    roomType_id = db.Column(db.Integer, primary_key=True)
+    roomType_name = db.Column(db.String(20), nullable=False)
+    roomType_price = db.Column(db.Numeric(4, 1), nullable=False)
 
-class Comment(db.Model):
-    __tablename__ = 'Comment'
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    content = db.Column(db.Text, nullable=False)
-    time = db.Column(db.DateTime, nullable=False, default=lambda:datetime.utcnow() + timedelta(hours=8))
-    
-    position_id = db.Column(db.Integer, db.ForeignKey(Position.id), nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey(User.id),nullable=False)
-    
-class EmailCaptcha(db.Model):
-    __tablename__ = 'email_captcha'
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    email = db.Column(db.String(100), nullable=False)
-    captcha = db.Column(db.String(100), nullable=False)
-    expiration_time = db.Column(db.DateTime, nullable=False,default=lambda:datetime.utcnow() + timedelta(hours=8,seconds=300)) 
-    
-class Send_resume(db.Model):
-    __tablename__ = 'send_resume'
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    send_time = db.Column(db.DateTime, nullable=False, default=lambda:datetime.utcnow() + timedelta(hours=8))
-    name = db.Column(db.String(15), nullable=True)
-    age = db.Column(db.Integer, nullable=True)
-    expect_position = db.Column(db.String(30), nullable=True)
-    gender = db.Column(db.String(30), nullable=True)
-    marriage = db.Column(db.String(5), nullable=True)
-    phone = db.Column(db.Text(), nullable=True)
-    expect_salary = db.Column(db.Integer, nullable=True)
-    email = db.Column(db.Text(), nullable=True)
-    expect_address = db.Column(db.String(30), nullable=True)
-    
-    education = db.Column(db.Text, nullable=True)
-    experience = db.Column(db.Text, nullable=True)
-    abilities = db.Column(db.Text, nullable=True)
-    about_me = db.Column(db.Text, nullable=True)
+class Room(db.Model):
+    __tablename__ = 'room'
+    room_id = db.Column(db.Integer, primary_key=True)
+    room_status = db.Column(db.Integer, nullable=False)
+    roomType_id = db.Column(db.Integer, db.ForeignKey('room_type.roomType_id'), nullable=False)
 
-    filepath = db.Column(db.String(255), nullable=True)  
-    
-    status = db.Column(db.String(8), nullable=True)
-    
-    # 添加外键列  
-    user_id = db.Column(db.Integer, db.ForeignKey(User.id), nullable=False)  
-    position_id = db.Column(db.Integer, db.ForeignKey(Position.id), nullable=False)
-    
-    # send_resume_status = db.relationship('Send_resume_status',backref='send_resume',lazy='dynamic')
-    
-# class Send_resume_status(db.Model):
-#     __tablename__ = 'send_resume_status'
-#     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    
-#     send_resume_id = db.Column(db.Integer, db.ForeignKey(Send_resume.id), nullable=False)
-    
-    
-#     a = db.relationship('Send_resume',backref='send_status',lazy='dynamic')
-    
-# class Accept_resume(db.Model):
-#     __tablename__ = 'accept_resume'
-#     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    
-#     send_resume = db.relationship('Send_resume',backref='accept_resume',lazy='dynamic')
-#     # 外键
-#     send_resume_id =  db.Column(db.Integer, db.ForeignKey(Send_resume.id), nullable=False)  
-    
-# class Refuse_resume(db.Model):
-#     __tablename__ = 'refuse_resume'
-#     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    
-#     send_resume = db.relationship('Send_resume',backref='refuse_resume',lazy='dynamic')
-    
-#     refuse_resume_id = db.Column(db.Integer, db.ForeignKey(Send_resume.id), nullable=False)  
+class Live(db.Model):
+    __tablename__ = 'live'
+    live_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'), nullable=False)
+    room_id = db.Column(db.Integer, db.ForeignKey('room.room_id'), nullable=False)
+    live_inTime = db.Column(db.Date, nullable=False, default=db.func.current_date())
+    live_outTime = db.Column(db.Date)
+    is_leaved = db.Column(db.Integer, nullable=False, default=0)
 
-# class PDFDocument(db.Model):  
-#     id = db.Column(db.Integer, primary_key=True, autoincrement=True)  
-#     filename = db.Column(db.String(128), nullable=False)  
-#     content = db.Column(db.LargeBinary)  # 用于存储PDF文件的二进制内容
+class Bill(db.Model):
+    __tablename__ = 'bill'
+    bill_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    live_id = db.Column(db.Integer, db.ForeignKey('live.live_id'), nullable=False)
+    live_days = db.Column(db.Integer, nullable=False)
+    bill_originPrice = db.Column(db.Numeric(6, 1), nullable=False)
+    bill_payPrice = db.Column(db.Numeric(6, 1), nullable=False)
 
+class Book(db.Model):
+    __tablename__ = 'book'
+    book_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'), nullable=False)
+    book_inTime = db.Column(db.Date, nullable=False)
+    book_liveDays = db.Column(db.Integer, nullable=False)
+    roomType_id = db.Column(db.Integer, db.ForeignKey('room_type.roomType_id'), nullable=False)
+    book_status = db.Column(db.Integer, nullable=False, default=0)
+
+class LivePerson(db.Model):
+    __tablename__ = 'live_person'
+    livePerson_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    livePerson_credit = db.Column(db.String(18), nullable=False)
+    livePerson_name = db.Column(db.String(20), nullable=False)
+    live_id = db.Column(db.Integer, db.ForeignKey('live.live_id'), nullable=False)
