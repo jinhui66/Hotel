@@ -28,12 +28,24 @@
                     </li>
                 </ul>
                 <ul class="navbar-nav">
+                    {% if user %}
+                    <li class="nav-item ">
+                        <label class="nav-link">{% if type=='user' %}用户{% else %}管理员{% endif %}</label>
+                    </li>
+                    <li class="nav-item ">
+                        <a class="nav-link">{% if  type=='user'%} {{user.user_name}} {% else %}  {{user.admin_name}} {% endif %}</a>
+                    </li>
+                    <li class="nav-item ">
+                        <a class="nav-link" href="{{url_for('menu.logout')}}">退出登录</a>
+                    </li>
+                    {% else %}
                     <li class="nav-item ">
                         <a class="nav-link" href="{{url_for('menu.login')}}">登录</a>
                     </li>
                     <li class="nav-item ">
                         <a class="nav-link" href="{{url_for('menu.register')}}">注册</a>
                     </li>
+                    {% endif %}
                 </ul>
         </div>
     </nav>
