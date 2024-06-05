@@ -1,0 +1,235 @@
+{% extends 'base.html' %}
+
+{% block title %}
+个人主页
+{% endblock %}
+{% block style %}
+<link rel="stylesheet" href="{{url_for('static',filename='/css/index.css')}}">
+<script src='{{url_for('static',filename='/js/echats.min.js')}}'></script> 
+{% endblock %}
+{% block body %}
+<div id="pic" style="background-color: paleturquoise; ">
+    <image src="./static/images/company.png" width="400px" height="100px" ></image>
+    <form action='/' method='GET'>
+        <input class="search_text" type="search" placeholder="请输入需要搜索的职位" aria-label="Search" name="keyword" value={{keyword}}>
+        <input class ="search_button" type="submit" value="搜索">
+    </form>
+</div>
+<div class="sidebar">
+    <ul>
+        <li>
+            <h4 style="display: flex; justify-content: center; align-items: center;">热门岗位</h4>
+        </li>
+        <li>
+            <p class="side">后端开发</p>
+            <span>></span>
+            <div class="sidebar-mask">
+                <div>
+                    <label class="lab">后端开发</label>
+                </div>
+                <br>
+                <div class="inside">
+                <a class="job" href="/?keyword=java">java</a>
+                <a class="job" href="/?keyword=C">C/C++</a>
+                <a class="job" href="/?keyword=PHP">PHP</a>
+                <a class="job" href="/?keyword=Python">Python</a><br>
+                <a class="job" href="/?keyword=Golang">Golang</a>
+                </div>
+            </div>
+        </li>
+        <li>
+            <p class="side">前端开发</p>
+            <span>></span>
+            <div class="sidebar-mask">
+                <div>
+                    <label class="lab">前端开发</label>
+                </div>
+                <br>
+                <div class="inside">
+                <a class="job" href="/?keyword=IOS">IOS</a>
+                <a class="job" href="/?keyword=Android">Android</a>
+                <a class="job" href="/?keyword=JS">JS</a>
+                <a class="job" href="/?keyword=VUE">VUE</a>
+                <a class="job" href="/?keyword=前端实习生">前端实习生</a>
+                <a class="job" href="/?keyword=前端工程师">前端工程师</a>
+                </div>
+            </div>
+        </li>
+        <li>
+            <p class="side">教育培训</p>
+            <span>></span>
+            <div class="sidebar-mask">
+                <div>
+                    <label class="lab">教育培训</label>
+                </div>
+                <br>
+                <div class="inside">
+                <a class="job" href="/?keyword=计算机老师">计算机老师</a>
+                <a class="job" href="/?keyword=机器人老师">机器人教师</a>
+                <a class="job" href="/?keyword=英语老师">英语老师</a>
+                <a class="job" href="/?keyword=数学老师">数学老师</a>
+                <a class="job" href="/?keyword=幼师">幼师</a>
+                <a class="job" href="/?keyword=助教">助教</a>
+                </div>
+            </div>
+        </li>
+        <li>
+            <p class="side">运维</p>
+            <span>></span>
+            <div class="sidebar-mask">
+                <div>
+                    <label class="lab">运维</label>
+                </div>
+                <br>
+                <div class="inside">
+                <a class="job" href="/?keyword=网络工程师">网络工程师</a>
+                <a class="job" href="/?keyword=网络安全">网络安全</a>
+                <a class="job" href="/?keyword=网络维护">网络维护</a>
+                <a class="job" href="/?keyword=网路工程师">网络工程师</a>
+                <a class="job" href="/?keyword=系统安全">系统安全</a>
+                <a class="job" href="/?keyword=运维工程师">运维工程师</a>
+                </div>
+            </div>
+        </li>
+        <li>
+            <p class="side">通信</p>
+            <span>></span>
+            <div class="sidebar-mask">
+                <div>
+                    <label class="lab">通信</label>
+                </div>
+                <br>
+                <div class="inside">
+                <a class="job" href="/?keyword=移动通信工程师">移动通信工程师</a>
+                <a class="job" href="/?keyword=5G网络优化">5G网络优化</a>
+                <a class="job" href="/?keyword=网络通信技术">网络通信技术</a>
+                <a class="job" href="/?keyword=通信资料员">通信资料员</a>
+                <a class="job" href="/?keyword=通信施工">通信施工</a>
+                <a class="job" href="/?keyword=通信项目助理">通信项目助理</a>
+                </div>
+            </div>
+            <div class="side-image">
+                <img src="./static/images/advertise.png" alt="广告" class="adver">
+                </div>
+        </li>
+    </ul>
+    
+    
+    
+</div>
+<br><br>
+{% if g.user and g.type=='user' %}
+<div style="height: 450px;">
+    <strong><h2>个人评估</h2></strong>
+      <br>
+    <div class="box2">
+    <div id="chart" style="width: 500px; height: 400px;position: relative;left: 50px;top: 20px; background-color: rgb(206, 231, 246);border-radius: 5%;"></div>
+    <script>
+      var chart = echarts.init(document.getElementById('chart'));
+      var option = {
+        title: {
+          text: '个人评估',
+          x: 'center',
+          textStyle: {
+                    color: '#000000' // 将文本颜色设置为黑色
+                }
+        },
+        tooltip: {},
+        legend: {
+          data: ['产品A']
+        },
+        radar: {
+          indicator: [
+            {name:'动手能力', max:100},
+            {name:'创新能力', max:100},
+            {name:'工作经验', max:100},
+            {name:'人物性格', max:100},
+            {name:'未来规划', max:100}
+          ],
+          name:
+          {
+            textStyle: {
+                color: '#000000' 
+            }
+          }
+        },
+        areaStyle:{},
+        series: [{
+          type: 'radar',
+          data: [
+            {
+              value: [80,80,60,85,60],
+            },
+  
+          ]
+        }]
+      };
+      chart.setOption(option);
+    </script>
+    </div>
+</div>
+<br><br><br><br><br>
+{% endif %}
+<div>
+    <h2>推荐岗位
+    </h2>
+</div>
+<div class="container">  
+    <div class="row" style="margin-top: 20px;">  
+        <div class="col"></div>  
+        <div class="col-10">  
+            {% if results %}  
+            <ul class="position-ul">  
+                {% for result in results %}  
+                <li>  
+                    <div class="side-position">  
+                        <img class="side-position-avatar" src="data/pictures/admin/{{result.admin.filepath}}" alt="">  
+                    </div>  
+                    <div class="position-main">  
+                        <div class="position-title"><a href="/position_detail_action?position_id={{result.id}}">{{result.position_name}}</a></div>  
+                        <div class="position-content">公司: {{result.company}}<br>月薪:{{result.salary}}</div>  
+                        <div class="position-detail">  
+                            <span class="position-author"></span>  
+                            <span class="position-time">{{result.release_time}}</span>  
+                        </div>  
+                    </div> 
+                </li>  
+                <br>
+                {% endfor %}  
+            </ul>  
+            {% endif %}  
+  
+            <!-- 分页控件 -->  
+            {% set page_length=6 %}
+
+            {% if page<=3 %}
+                {% set min_page=1 %}
+            {% else %}
+                {% set min_page = page-2 %}
+            {% endif %}
+
+            {% if min_page+page_length>total_pages %}
+                {% set page_length = total_pages - min_page + 1 %}
+            {% endif %}
+
+            <div class="pagination">  
+
+                {% if page > 1 %}  
+                    <a href="?page={{page-1}}&keyword={{keyword}}" class="pagination-link">上一页</a>  
+                {% endif %}  
+                {% for p in range(min_page,min_page+page_length) %}  
+                    {% if p == page %}  
+                        <span class="pagination-link active">{{p}}</span>  
+                    {% else %}  
+                        <a href="?page={{p}}&keyword={{keyword}}" class="pagination-link">{{p}}</a>  
+                    {% endif %}  
+                {% endfor %}  
+                {% if page < total_pages %}  
+                    <a href="?page={{page+1}}&keyword={{keyword}}" class="pagination-link">下一页</a>  
+                {% endif %}  
+            </div>
+        </div>  
+        <div class="col"></div>  
+    </div>  
+</div>
+{% endblock %}

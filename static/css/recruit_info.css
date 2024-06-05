@@ -1,0 +1,149 @@
+
+.position_container {  
+    width: 100%; /* 容器宽度为100%，可以根据需要调整 */  
+    max-width: 1000px; /* 最大宽度为1200px，避免在大屏幕上过宽 */  
+    min-width: 900px;
+    margin: 0 auto; /* 水平居中 */  
+    padding: 100px; /* 内边距为20px，可以根据需要调整 */  
+    box-sizing: border-box; /* 确保宽度和内边距的计算方式是包含内边距的 */  
+    background-color: #fff; /* 背景颜色为白色，可以根据需要调整 */   
+    border-radius: 5px; /* 边框圆角为5像素，可以根据需要调整 */  
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* 盒子阴影，增加立体感 */  
+}
+
+
+.row {
+    display: flex;
+    justify-content: space-between; /* 标签和文本框之间间隔 */  
+    margin-bottom: 10px; /* 行与行之间的间隔 */  
+    width: 90%;
+}
+
+form {  
+    width: 100%; 
+}  
+
+
+form input[type="submit"]:hover {  
+    background-color: rgb(35, 150, 196);  
+}  
+
+.position-ul li{
+    padding: 10px;
+    overflow: hidden;
+    display: flex;
+    background-color: #fff;
+    border-bottom:1px solid #eee;
+    font-size: 20px;
+}
+
+.position-ul
+{
+    position: relative;
+    width: 80%;
+    left: 200px;
+    top: 40px;
+}
+
+
+form input[type="submit"] {  
+    padding: 5px 0px;  
+    background-color: rgb(35, 150, 196);  
+    color: white;  
+    border: none;  
+    border-radius: 4px;  
+    cursor: pointer;
+    position: relative;
+    width: 100px;
+    height: 50px;
+}  
+
+form input[type="text"],  
+form input[type="number"] {  
+    width: 50%;  
+    padding: 5px;  
+    border: 1px solid #ccc;  
+    border-radius: 4px;  
+}  
+
+.side-position{
+    flex-basis: 150px;
+    height:100%;
+}
+.side-position-avatar{
+    width: 250px;
+    height:250px;
+    border-radius: 3px;
+}
+/*  */
+/* .position-main{ */
+    /* flex: 1; */
+    /* width: 500px; */
+    /* margin-left:10px; */
+    /* overflow: hidden; */
+    /* border-radius: 5%; */
+/* } */
+
+.position-title a{
+    color: #259;
+    font-size:25px;
+    font-weight: 90;
+    padding: 25px;
+    position: relative;
+    top: 10px;
+}
+
+.position-text1
+{
+    position: relative;
+    top: 20px;
+    left: 25px;
+}
+
+
+.position-author{
+    font-size: 20px;
+    margin-top: 5px;
+    padding: 30px;
+}
+.position-content{
+    margin-top: 5px;
+    font-size:20px;
+    padding: 3cqb;
+}
+.position-detail{
+    text-align: right;
+    margin-top: 20px;
+}
+.position-detail .position-author{
+    margin-right:10px;
+}
+
+.position-title-detail{
+    color: #259;
+    font-size:28px;
+    font-weight: 900;
+}
+
+.position-content-detail{
+    margin-top: 15px;
+    font-size:28px;
+}
+
+body{
+    background-image: url("../images/bc2.jpg");
+    background-size: 120%;
+}
+
+
+.comment-input{
+    position: relative;
+    left: 40%;
+}
+/*  */
+/* .text */
+/* { */
+    /* position: absolute; */
+    /* top: 20%; */
+    /* left: 10%; */
+/* } */

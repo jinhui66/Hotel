@@ -1,0 +1,285 @@
+.error-message {  
+    color: red;   
+    font-size: 14px;   
+    margin-top: 5px;   
+ }   
+
+body {   
+font-family: Arial, sans-serif;   
+background-color: #f2f2f2;   
+padding: 20px;   
+margin: 0;
+padding: 0;
+overflow: hidden;
+zoom: 85%;
+}  
+
+/* 报错信息 */
+.error-message { 
+    color: red;  
+    font-size: 14px;   
+    margin-top: 5px;   
+ }   
+
+
+
+button {
+    border: none !important;
+    outline: none !important;
+}
+
+#container {
+    height: 100vh;
+}
+
+/* 背景部件 */
+.bg {
+    position: absolute;
+    top: 50px;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.sun {
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    top: 500px;
+    left: 48%;
+    transform: translate(-50%, -50%);
+    width: 600px;
+    height: 600px;
+    background: orange;
+    border-radius: 50%;
+}
+ 
+.moon {
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    top: 54%;
+    left: 48%;
+    transform: translate(calc(-50% + -160px), calc(-50% + -180px));
+    width: 600px;
+    height: 600px;
+    box-shadow: 160px 180px 0 cyan;
+    border-radius: 50%;
+}
+ 
+.sea {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 35%;
+    backdrop-filter: blur(100px);
+    -webkit-backdrop-filter: blur(100px);
+    z-index: 100;
+}
+ 
+.sun,
+.moon,
+.sun-box,
+.moon-box,
+.bg {
+    transition: all 1s ease-in-out;
+}
+
+.sun-box,
+.moon-box {
+    position: relative;
+}
+ 
+.light .bg {
+    background: #ffeea2;
+}
+ 
+.dark .sun-box {
+    height: 0;
+}
+ 
+.dark .moon-box {
+    height: 100%;
+}
+ 
+.dark .bg {
+    background: #040720;
+}
+
+
+/* 单选框 */
+.container2 .c2 {
+    transition: 1s;
+    z-index: 1;
+    float: left;
+    margin: 5px 0;
+    cursor: pointer;
+    position: relative;
+    display: block;
+    width: 80px;
+    height: 40px;
+    background-color: #222;
+    border-radius: 40px;
+    box-shadow: inset 0 2px 15px rgba(0, 0, 0, 0.2),
+        inset 0 2px 2px rgba(0, 0, 0, 0.2),
+        inset 0 -1px 1px rgba(0, 0, 0, 0.2);
+}
+
+.container2 .indicator {
+    position: absolute;
+    z-index: 2;
+    left: 0px;
+    top: 55px;
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(to bottom, #444, #222);
+    border-radius: 50%;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5),
+        inset 0 1px 1px rgba(255, 255, 255, 0.1);
+    transform: scale(0.9);
+    transition: 1s;
+    pointer-events: none;
+}
+ 
+
+.container2 .indicator::before {
+    content: "";
+    width: 5px;
+    height: 5px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #f00;
+    border-radius: 50%;
+    box-shadow: 0 0 2px #f00,
+        0 0 5px #f00,
+        0 0 10px #f00,
+        0 0 15px #f00,
+        0 0 20px #f00,
+        0 0 25px #f00,
+        0 0 30px #f00,
+        0 0 35px #f00;
+    transition: 0.5s;
+}
+ 
+.container2 input:checked~.indicator {
+    left: 40px;
+}
+
+.container2 input:checked~.indicator::before {
+    background-color: #0f0;
+    box-shadow: 0 0 2px #0f0,
+        0 0 5px #0f0,
+        0 0 10px #0f0,
+        0 0 15px #0f0,
+        0 0 20px #0f0,
+        0 0 25px #0f0,
+        0 0 30px #0f0,
+        0 0 35px #0f0;
+}
+ 
+.container2 input:checked~.dark .sun-box {
+    height: 100% !important;
+}
+ 
+.container2 input:checked~.dark .sun {
+    top: 62%;
+}
+ 
+.container2 input:checked~.dark .moon-box {
+    height: 0 !important;
+    transform-origin: -10px;
+    transform: rotate(-90deg);
+}
+ 
+.container2 input:checked~.dark .bg {
+    background: #ffeea2;
+}
+ 
+.container2 input:checked~label {
+    background-color: #ffeea2;
+}
+ 
+.container2 input:checked~.indicator {
+    background: #ffeea2;
+    box-shadow: 0 0 .5;
+}
+
+/* 注册框 */
+.register_container {
+    position: fixed;
+    top: 20%;
+    left: 36%;
+    width: 400px;
+    height: 700px;
+    z-index: 101;
+    background-color: rgba(255, 255, 255, 0.1);
+    /* 背景模糊 */
+    backdrop-filter: blur(20px);
+    border-top: 1px solid rgba(255, 255, 255, 0.5);
+    border-left: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* 阴影 */
+    box-shadow: 0px 20px 50px rgba(0, 0, 0, 0.5);
+}
+
+.register_container input{
+    width: 100%;
+    height: 50px;
+    background: none;
+    border: none;
+    outline: none;
+    color: #fff;
+    font-size: 17px;
+    font-weight: 500;
+    /* 请输入前的缩进 */
+    text-indent: 8px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.8);
+
+}
+
+#register {
+    font-size: 20px;
+    width: 350px;
+    height: 45px;
+    margin: 35px auto 40px auto;
+    border: none;
+    background: #00addd;
+    color: #fff;
+    letter-spacing: 20px;
+    text-indent: 20px;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    position: absolute;
+    top: 80%;
+    z-index: -1;
+}
+
+
+
+.register_container input::placeholder {
+    color: rgba(250, 250, 250, 0.7);
+}
+
+.register_container .tit {
+    cursor: default;
+    color: #fff;
+    font-size: 45px;
+    font-weight: bold;
+    /* 大写 */
+    text-transform: uppercase;
+    /* 字间距 */
+    letter-spacing: 10px;
+    text-indent: 10px;
+    margin: 90px auto 50px auto;
+}
+
+.register_container .form-control {
+    background: transparent;
+    color: #fff;
+}

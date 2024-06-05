@@ -1,0 +1,95 @@
+{% extends 'base.html' %}  
+{% block title %}
+    注册界面
+{% endblock %} 
+{% block style %}
+    <link rel='stylesheet' href='{{url_for('static',filename='/css/register.css')}}'> 
+    <script src='{{url_for('static',filename='/js/jquery.min.js')}}'></script> 
+    <script src='{{url_for('static',filename='/js/register.js')}}'> </script>
+{% endblock %}
+{% block body%}
+<body  class="container2">
+    
+<input type="checkbox" id="a12" hidden>
+<i class="indicator"></i>
+<label class="c2" for="a12"></label>
+<div id="container" class="dark">
+    <div class="bg"></div>
+    <div class="moon-box">
+        <div class="moon"></div>
+    </div>
+    <div class="sun-box">
+        <div class="sun"></div>
+    </div>
+    <div class="sea"></div>
+</div>
+<div class="register_container">
+    <div class="tit">register</div>  
+    <form id="loginForm"> 
+        <select id="type" name="type">  
+            <option value="user">求职者</option>  
+            <option value="admin">招聘者</option>  
+        </select>
+        <div class="form-group">
+            <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="email" placeholder='邮箱' required>
+            <small id="emailHelp" class="form-text text-muted" style="color: white;">我们不会把邮箱用于其他用户</small>
+        </div>
+        <div class="form-group">
+            <div class="input-group">
+                <input type="text" class="form-control" name="captcha" required>
+                <div class="input-group-append">
+                    <button class="btn btn-outline-secondary" type="button" id="captcha-btn">获取验证码</button>
+                </div>
+            </div>
+        </div> 
+        <div class="form-group">
+            <input type="text" class="form-control" name="username"  placeholder='用户名长度:3-10位' required>
+        </div>
+        <div class="form-group">
+            <input type="password" class="form-control" id="exampleInputPassword1" name="password" placeholder='密码长度:6-20位' required>
+        </div>
+        <div class="form-group">
+            <input type="password" class="form-control" name="password_confirm" placeholder='确认密码' required>
+        </div>
+        <div class="form-group">  
+            <input id="register" type="submit" value="注册">  
+        </div>  
+    </form>  
+</div>  
+
+<script>
+    $(document).ready(function() {  
+
+        $('#loginForm').on('submit', function(e) {  
+            e.preventDefault();  // 阻止表单默认的提交行为 \
+            var type = $("select[name='type']").val();
+            var email = $("input[name='email']").val(); 
+            var captcha = $("input[name='captcha']").val();
+            var password = $("input[name='password']").val(); 
+            var password_confirm = $("input[name='password_confirm']").val(); 
+            var username = $("input[name='username']").val();
+
+            $.ajax({  
+                url: '/register_action',  
+                method: 'POST',  
+                data: {type: type, email: email, password: password, password_confirm: password_confirm, captcha: captcha, username: username},
+                success: function(response) {  
+                    if (response.status == 'success') {  
+                        window.location.href = '/login';
+                    } else {
+                        $('#password').val('');  // 清空输入框 
+                        $('#password_confirm').val('');  // 清空输入框 
+                        $('#captcha').val('');  // 清空输入框 
+                        alert(response.message);  
+                    }  
+                },  
+                error: function(error) {  
+                    alert('error');
+                    console.error(error);  
+                }  
+            });  
+        });  
+    });       
+</script>
+</body>
+{% endblock %}

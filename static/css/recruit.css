@@ -1,0 +1,125 @@
+body {  
+    font-family: Arial, sans-serif;  
+    margin: 0;  
+}  
+
+.row {
+    display: flex;
+    justify-content: space-between; /* 标签和文本框之间间隔 */  
+    margin-bottom: 10px; /* 行与行之间的间隔 */  
+    width: 90%;
+}
+
+
+.label {  
+    align-items: center; 
+    flex: 0 0 100px; /* 假设标签宽度为100px，不伸缩 */  
+    /* 其他标签样式，如字体大小、颜色等 */  
+}  
+
+.input-wrapper{  
+    width: 200px; /* 文本框宽度填充其父元素 */  
+    box-sizing: border-box; /* 包含padding和border在width内 */
+    padding-right: 30px;  
+    /* padding: 10px */
+    /* 其他文本框样式，如边框、内边距等 */  
+}
+
+form {  
+    width: 100%; 
+}  
+
+form input[type="email"],  
+form input[type="text"],  
+form input[type="number"] {  
+    width: 100%;  
+    padding: 5px;  
+    border: px solid #ccc;  
+    border-radius: 4px;  
+}  
+
+
+form input[type="submit"] {  
+    padding: 10px 20px;  
+    background-color: rgb(35, 150, 196);  
+    color: white;  
+    border: none;  
+    border-radius: 4px;  
+    cursor: pointer;  
+}  
+
+p{
+    position: relative;
+    left: -130px;
+}
+
+.publish
+{
+    position: relative;
+    left: -150px;
+    width: 140px; height: 45px;
+}
+/*  */
+.position-ul
+{
+    position: relative;
+    width: 1000px;
+    left: -100px;
+}
+
+.position-main span{
+    font: 20px;
+    display: inline-block;
+}
+/*  */
+.position-ul li{
+    padding: 10px;
+    overflow: hidden;
+    display: flex;
+    background-color: #fff;
+    border-bottom:1px solid #eee;
+    font-size: 20px;
+}
+.side-position{
+    flex-basis: 150px;
+    height:100%;
+}
+.side-position-avatar{
+    width: 150px;
+    height:150px;
+    border-radius: 3px;
+}
+
+
+.position-author{
+    font-size: 20px;
+    margin-top: 5px;
+    padding: 30px;
+}
+.position-content{
+    margin-top: 5px;
+    font-size:20px;
+    padding: 3cqb;
+}
+.position-detail{
+    text-align: right;
+    margin-top: 20px;
+}
+.position-detail .position-author{
+    margin-right:10px;
+}
+
+.position-title{
+    color: #259;
+    font-size:28px;
+    font-weight: 900;
+    position: relative;
+    left: 25px;
+    top: 10px;
+}
+/*  */
+/* .position-content-detail{ */
+    /* margin-top: 15px; */
+    /* font-size:20px; */
+/* } */
+/*  *
