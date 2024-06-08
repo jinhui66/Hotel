@@ -61,10 +61,7 @@ def logout():
 
 @bp.route('/register',methods=['GET','POST'])
 def register():
-    if request.method == 'GET':
-        return render_template('register.html')
-    else:
-        pass
+    return render_template('register.html')
 
 @bp.route('/register_action',methods=['GET','POST'])
 def register_action():
@@ -105,6 +102,11 @@ def register_action():
 
 @bp.route('/forgot_password',methods=['GET','POST'])
 def forgot_password():
-    if request.method == 'GET':
-        return render_template('forgot_password.html')
+    return render_template('forgot_password.html')
 
+@bp.route('/forgot_password_action',methods=['GET','POST'])
+def forgot_password_action():
+    if request.method == 'GET':
+        pass
+    else:
+        pass
