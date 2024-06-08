@@ -120,6 +120,16 @@ def forgot_password_action():
                 get_user.admin_password = hashlib.sha256(password.encode('utf-8')).hexdigest()
             db.session.commit()
             session.clear()
-            return jsonify({'status':'success', 'message':'error'})
-        return jsonify({'status':'', 'message':'账号或密码错误'})
+            return jsonify({'status':'success', 'message':''})
+        else:
+            for field, errors in form.errors.items():
+                # errors 是一个列表，包含该字段的所有错误消息
+                if errors:
+                #     # 打印第一个错误消息
+                    error = errors[0]
+                    print(f"{field} 的第一个错误是: {errors[0]}")
+                    break
+                print(error)
+            return jsonify({'status': '','message':error})
+
 
