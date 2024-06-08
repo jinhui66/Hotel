@@ -7,7 +7,7 @@ from models.table import User, Admin
 from blueprints.menu import bp as menu_bp
 from blueprints.email import bp as email_bp
 # import torch
-
+#
 # 启动
 app = Flask(__name__)
 app.template_folder = 'templates'
