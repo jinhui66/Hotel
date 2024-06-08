@@ -1,8 +1,7 @@
 from flask import Blueprint
 from flask import Flask,request,render_template,session,redirect,url_for,jsonify
-from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import text
-from exts import db,mail
+from exts import db
 import hashlib
 import json
 from models.forms import RegisterForm,LoginForm,ForgotForm
