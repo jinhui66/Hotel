@@ -35,7 +35,7 @@ def login_action():
                     password = hashlib.sha256(password.encode('utf-8')).hexdigest()
                     print(password)
                     if(get_user.user_password == password):
-                        print(1)
+                        print('success')
                         return jsonify({'status':'success', 'message':''})
 
             else:
@@ -109,4 +109,18 @@ def forgot_password_action():
     if request.method == 'GET':
         pass
     else:
-        pass
+        form = ForgotForm(request.form)
+        if form.validate():
+            email = form.email.data
+            password = form.password.data
+            if User.query.filter_by(email=email).first():
+                get_user = User.query.filter_by(email=email).first()
+                get_user.user_password = hashlib.sha256(password.encode('utf-8')).hexdigest()
+            elif Admin.query.filter_by(email=email).first():
+                get_user = Admin.query.filter_by(email=email).first()
+                get_user.admin_password = hashlib.sha256(password.encode('utf-8')).hexdigest()
+            db.session.commit()
+            session.clear()
+            return jsonify({'status':'success', 'message':'error'})
+        return jsonify({'status':'', 'message':'账号或密码错误'})
+
