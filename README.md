@@ -1,9 +1,9 @@
 # flask
 数据库课程设计期末作业，酒店管理系统。
 
-**config.py**文件需要自行配置
+**config.py**文件需要自行配置。
 
-conda环境在**environment.yaml**中
+conda环境在**environment.yaml**中。
 
 ## conda环境导入:
 ```
