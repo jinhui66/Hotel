@@ -3,11 +3,15 @@ import config
 from exts import db,mail
 from flask_migrate import Migrate
 import os
+import pymysql
 from models.table import User, Admin
 from blueprints.menu import bp as menu_bp
 from blueprints.email import bp as email_bp
 # import torch
 #
+
+pymysql.install_as_MySQLdb()
+
 # 启动
 app = Flask(__name__)
 app.template_folder = 'templates'
@@ -27,9 +31,9 @@ migrate = Migrate(app,db)
 app.register_blueprint(menu_bp)
 app.register_blueprint(email_bp)
 
-# 建表
-with app.app_context():
-    db.create_all()
+# # 建表
+# with app.app_context():
+#     db.create_all()
 
 @app.before_request
 def my_before_request():

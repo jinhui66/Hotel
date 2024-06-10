@@ -2,7 +2,7 @@ import wtforms
 from wtforms.validators import Email, Length, EqualTo, InputRequired
 from exts import db
 from datetime import datetime, timedelta
-from sqlalchemy import desc
+from sqlalchemy import desc, text
 from models.table import User, Admin, EmailCaptcha
 
 # Form：主要就是用来验证前端提交的数据是否符合要求
@@ -17,8 +17,15 @@ class RegisterForm(wtforms.Form):
     # 1. 邮箱是否已经被注册
     def validate_email(self, field):
         email = field.data
-        user = User.query.filter_by(email=email).first()
-        admin = Admin.query.filter_by(email=email).first()
+        # user = User.query.filter_by(email=email).first()
+        # admin = Admin.query.filter_by(email=email).first()
+        sql = text('select * FROM User WHERE email = :email')
+        user = db.session.execute(sql, {'email': email}).fetchone()
+
+        sql = text('select * FROM Admin WHERE email = :email')
+        admin = db.session.execute(sql, {'email': email}).fetchone()
+        print(user)
+        print(admin)
         if user or admin:
             raise wtforms.ValidationError(message="该邮箱已经被注册！")
 
@@ -26,14 +33,19 @@ class RegisterForm(wtforms.Form):
     def validate_captcha(self, field):
         captcha = field.data
         email = self.email.data
-        captcha_model = EmailCaptcha.query.filter_by(email=email, captcha=captcha).order_by(desc(EmailCaptcha.id)).first()
+
+        sql = text('select * from EmailCaptcha where email = :email and captcha = :captcha order by id desc')
+        captcha_model = db.session.execute(sql, {'email': email, 'captcha': captcha}).fetchone()
+        # captcha_model = EmailCaptcha.query.filter_by(email=email, captcha=captcha).order_by(desc(EmailCaptcha.id)).first()
         if not captcha_model:
             raise wtforms.ValidationError(message="邮箱或验证码错误！")
         if captcha_model.expiration_time < datetime.utcnow()+timedelta(hours=8):
             raise wtforms.ValidationError(message="邮箱或验证码错误！")
         else:
             # todo：可以删掉captcha_model
-            db.session.delete(captcha_model)
+            # db.session.delete(captcha_model)
+            sql = text('delete from EmailCaptcha where id = :id')
+            db.session.execute(sql, {'id':captcha_model.id})
             db.session.commit()
 
 class ForgotForm(wtforms.Form):
@@ -43,17 +55,27 @@ class ForgotForm(wtforms.Form):
     password_confirm = wtforms.StringField(validators=[EqualTo("password", message="两次密码不一致！")])
 
     # 1. 邮箱是否被注册
-    def registered_email(self, field):
+    def validate_email(self, field):
         email = field.data
-        get_email = User.query.filter_by(email=email).first()
-        if not get_email:
+        # get_email = User.query.filter_by(email=email).first()
+        # print(1)
+        sql = text('select * FROM User WHERE email = :email')
+        user = db.session.execute(sql, {'email': email}).fetchone()
+
+        sql = text('select * FROM Admin WHERE email = :email')
+        admin = db.session.execute(sql, {'email': email}).fetchone()
+        print(user)
+        print(admin)
+        if not user and not admin:
             raise wtforms.ValidationError(message="该邮箱未被注册！")
 
     # 2. 验证码是否正确
     def validate_captcha(self, field):
         captcha = field.data
         email = self.email.data
-        captcha_model = EmailCaptcha.query.filter_by(email=email, captcha=captcha).order_by(desc(EmailCaptcha.id)).first()
+        # captcha_model = EmailCaptcha.query.filter_by(email=email, captcha=captcha).order_by(desc(EmailCaptcha.id)).first()
+        sql = text('select * from EmailCaptcha where email = :email and captcha = :captcha order by id desc')
+        captcha_model = db.session.execute(sql, {'email': email, 'captcha': captcha}).fetchone()
         if not captcha_model:
             raise wtforms.ValidationError(message="邮箱或验证码错误！")
         if captcha_model.expiration_time < datetime.utcnow()+timedelta(hours=8):
