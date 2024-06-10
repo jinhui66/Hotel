@@ -3,14 +3,11 @@ import config
 from exts import db,mail
 from flask_migrate import Migrate
 import os
-import pymysql
-from models.table import User, Admin
 from blueprints.menu import bp as menu_bp
 from blueprints.email import bp as email_bp
+from sqlalchemy import text
 # import torch
 #
-
-pymysql.install_as_MySQLdb()
 
 # 启动
 app = Flask(__name__)
@@ -40,11 +37,15 @@ def my_before_request():
     id = session.get('user_id')
     type = session.get('type')
     if id and type == 'user':
-        user = User.query.filter_by(user_id=id).first()
+        # user = User.query.filter_by(user_id=id).first()
+        sql = text('SELECT * FROM User WHERE user_id = :id')
+        user = db.session.execute(sql, {'id': id}).fetchone()
         setattr(g,'user',user)
         setattr(g,'type','user')
     elif id and type == 'admin':
-        admin = Admin.query.filter_by(admin_id=id).first()
+        # admin = Admin.query.filter_by(admin_id=id).first()
+        sql = text('SELECT * FROM Admin WHERE admin_id = :id')
+        admin = db.session.execute(sql, {'id': id}).fetchone()
         setattr(g,'user',admin)
         setattr(g,'type','admin')
     else:

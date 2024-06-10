@@ -54,7 +54,11 @@ def login_action():
 
 @bp.route('/',methods=['GET','POST'])
 def menu():
-    return render_template('menu/index.html')
+    if not session.get('user_id'):
+        return redirect('login')
+    else:
+        return render_template('menu/index.html')
+
 
 
 @bp.route('/logout',methods=['GET','POST'])
@@ -118,7 +122,7 @@ def forgot_password():
 def forgot_password_action():
     if request.method == 'GET':
         pass
-    else:
+    else: # post
         form = ForgotForm(request.form)
         if form.validate():
             email = form.email.data
