@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+
+{% block title %}
+列出所有房间
+{% endblock %}
+{% block style %}
+<style>
+
+    body{
+        margin: 0;
+        padding: 0;
+        border: 0;
+    }
+    #backgroung{
+        margin: 0;
+        padding: 0;
+        border: 0;
+       vertical-align: baseline;
+        height:800px;
+        background-attachment: fixed;
+        background-size: cover;
+        background-image:url("../static/2.jpg")
+    }
+    #dl{
+        width:600px;
+        height:450px;
+        background-image: linear-gradient(120deg, rgb(107, 182, 204) 0%, rgb(206, 226, 223) 100%);
+        position: absolute;
+        top:100px;
+        right:300px;
+        margin:auto;
+        border-radius: 10%;
+        box-shadow:10px 10px 1px rgba(97, 91, 100, 0.5);
+
+    }
+    .text{
+        color:white;
+        display: flex;
+        justify-content: center;
+        font-style: inherit;
+    }
+    .input{
+        height:10%;
+        width:60%;
+    }
+    .but{
+        display: flex;
+        justify-content: center;
+    }
+    .input-box{
+        width:500px;
+
+    }
+
+</style>
+{% endblock %}
+{% block body %}
+<form method="post">
+    <div id="backgroung" >
+        <div id="dl">
+            <div class="text"><h1>列出所有房间</h1></div>
+      <div class="input-box">
+
+            <table>
+                  <tr>
+                      <th>房间id:</th>
+                      <th>房间状态:</th>
+                      <th>房间类型:</th>
+                 </tr>
+                 {% for Room in data_all %}
+                 <tr>
+                      <td>{{ Room.room_id }}</td>
+                      <td>{{ Room.room_status }}</td>
+                      <td>{{ Room.roomType_id }}</td>
+                </tr>
+                 {% endfor %}
+            </table>
+
+          </div>
+        </div>
+    </div>
+</form>
+{% endblock %}

@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+
+{% block title %}
+xxx酒店房间管理系统
+{% endblock %}
+{% block style %}
+<style>
+    body{
+        margin: 0;
+        padding: 0;
+        border: 0;
+        background-image: {{url_for('static',filename="./images/bc2.jpg")}};
+        background-size: 120%;
+    }
+    #background{
+        margin: 0;
+        padding: 0;
+        border: 0;
+        vertical-align: baseline;
+        height:800px;
+        background-attachment: fixed;
+        background-size: cover;
+        background-image:url("https://tse1-mm.cn.bing.net/th/id/R-C.d296734bc270a76093c26d376b8c2336?rik=NZmDaLVlS5NjHw&riu=http%3a%2f%2fupload-images.jianshu.io%2fupload_images%2f209669-b14e719498565d4c.png&ehk=HVdUDVUqT0hFQBcDbKaiBDZ0VqrF5wg0fGSMsZOnOws%3d&risl=&pid=ImgRaw&r=0");
+    }
+    #dl{
+        width:200px;
+        height:260px;
+        background-image: linear-gradient(120deg, #50fdff 0%, #fce5ff 100%);
+        position: absolute;
+        top:0;
+        bottom:0;
+        left:0;
+        right: 0;
+        margin:auto;
+        border-radius: 10%;
+        box-shadow:10px 10px 1px rgba(97, 91, 100, 0.5);
+    }
+    .text{
+        color:white;
+        display: flex;
+        justify-content: center;
+
+    }
+    .input{
+        height:10%;
+        width:60%;
+    }
+    .but{
+        display: flex;
+        justify-content: center;
+    }
+    button{
+        width:150px;
+        background-image: linear-gradient(120deg, #50fdff 0%, #fce5ff 100%);
+        border-radius:10%;
+    }
+    button:hover{
+        font-size:15px;
+        background-image: linear-gradient(120deg,rgb(209, 221, 243) 0%, #96e8e6 100%);
+    }
+    button:active{
+        background-image: linear-gradient(120deg,#bcffff 0%,  #caf7ec 100%);
+
+    }
+</style>
+{% endblock %}
+{% block body %}
+<div id="background" >
+    <div id="dl">
+        <div class="text">系统功能选择</div>
+        <br>
+    <div class="but">
+            <a href="create"><button>增加房间</button></a>
+        </div>
+        <br>
+        <div class="but">
+     <a href="query_1"><button>房间查询</button></a>
+        </div>
+    <br>
+    <div class="but">
+        <a href="delete"><button>删除房间</button></a>
+    </div>
+    <br>
+    <div class="but">
+    <a href="list"><button>列出所有房间信息</button></a>
+    </div>
+        <br>
+    </div>
+</div>
+
+{% endblock %}

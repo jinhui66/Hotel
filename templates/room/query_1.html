@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% block title %}
+房间信息查看页面
+{% endblock %}
+{% block style %}
+<style>
+    body{
+        margin: 0;
+        padding: 0;
+        border: 0;
+    }
+    #backgroung{
+        margin: 0;
+        padding: 0;
+        border: 0;
+       vertical-align: baseline;
+        height:600px;
+        background-attachment: fixed;
+        background-size: cover;
+        background-image:url("../static/5.jpg");
+    }
+    #dl{
+        width:200px;
+        height:200px;
+        background-color:rgba(0, 0, 0,.5);
+        position: absolute;
+        top:0;
+        bottom:0;
+        left:0;
+        right: 0;
+        margin:auto;
+        border-radius: 10%;
+        box-shadow:10px 10px 1px rgba(97, 91, 100, 0.5);
+    }
+    .text{
+     margin-top:10px;
+        color:white;
+        display: flex;
+        justify-content: center;
+        font-style: inherit;
+    }
+    .input{
+        height:10%;
+        width:60%;
+    }
+    .but{
+        display: flex;
+        justify-content: center;
+    }
+</style>
+{% endblock %}
+{% block body %}
+<form method="post">
+    <div id="backgroung" >
+        <div id="dl">
+            <div class="text">查看房间</div>
+            <br>
+        <br>
+            <div class="text" >房间id:<input class="input"  type="text" name="room_id"></input></div>
+        <br>
+        <br>
+          <div class="but"> <a href="/query_1" method='POST'><button type="submit" >提交</button></a></div>
+        </div>
+    </div>
+</form>
+{% endblock %}

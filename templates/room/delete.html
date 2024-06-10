@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{% block title %}
+删除房间
+{% endblock %}
+{% block style %}
+<style>
+    body{
+        margin: 0;
+        padding: 0;
+        border: 0;
+    }
+    #background{
+        margin: 0;
+        padding: 0;
+        border: 0;
+       vertical-align: baseline;
+        height:600px;
+        background-attachment: fixed;
+        background-size: cover;
+        background-image:url("../static/6.jpg")
+    }
+    #dl{
+        width:200px;
+        height:200px;
+        background-image: linear-gradient(120deg,rgb(255,216,185) 0%,rgb(255,243,227) 100%);
+        position: absolute;
+        top:0;
+        bottom:0;
+        left:0;
+        right: 0;
+        margin:auto;
+        border-radius: 10%;
+        box-shadow:10px 10px 1px rgba(97, 91, 100, 0.5);
+
+    }
+    .text{
+        color:white;
+        display: flex;
+        justify-content: center;
+        font-style: inherit;
+    }
+    .input{
+        height:10%;
+        width:60%;
+        background-color:rgb(255,216,185);
+    }
+    .but{
+        display: flex;
+        justify-content: center;
+    }
+</style>
+{% endblock %}
+{% block body %}
+<form method="post">
+    <div id="background" >
+        <div id="dl">
+            <div class="text">要删除的房间</div>
+            <br>
+            <div class="text" >房间id：<input class="input"  type="text" name="room_id"></input></div>
+                <br>
+                <br>
+                <br>
+            <div class="but">
+           <a href="success" target="_blank"><button type="submit" >提交</button></a>
+            </div>
+        </div>
+    </div>
+</form>
+{% endblock %}

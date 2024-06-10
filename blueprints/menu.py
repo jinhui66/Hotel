@@ -11,6 +11,16 @@ import time
 
 bp = Blueprint('menu',__name__,url_prefix="/")
 
+@bp.route('/',methods=['GET','POST'])
+def menu():
+    if not session.get('user_id'):
+        return redirect('login')
+    elif session['type'] == 'user':
+        return render_template('menu/index.html')
+    elif session['type'] == 'admin':
+        return render_template('room/header.html')
+
+
 @bp.route('/login',methods=['GET','POST'])
 def login():
     return render_template('menu/login.html')
@@ -52,12 +62,6 @@ def login_action():
                         return jsonify({'status': 'success', 'message':''})
         return jsonify({'status':'', 'message':'账号或密码错误'})
 
-@bp.route('/',methods=['GET','POST'])
-def menu():
-    if not session.get('user_id'):
-        return redirect('login')
-    else:
-        return render_template('menu/index.html')
 
 
 
@@ -89,7 +93,7 @@ def register_action():
                 # db.session.add(user)
                 # db.session.commit()
 
-                sql = text('insert into User(email,user_name,user_password) value(:email, :user_name,:user_password)')
+                sql = text('insert into User(email,user_name,user_password) value(:email, :user_name, :user_password)')
                 db.session.execute(sql, {'email': email, 'user_name':username, 'user_password':hashlib.sha256(password.encode('utf-8')).hexdigest()})
                 db.session.commit()
                 return jsonify({'status': 'success'})
@@ -98,7 +102,7 @@ def register_action():
                 # db.session.add(admin)
                 # db.session.commit()
 
-                sql = text('insert into Admin(email,admin_name,admin_password) value(:email, :admin_name,:admin_password)')
+                sql = text('insert into Admin(email,admin_name,admin_password) value(:email, :admin_name, :admin_password)')
                 db.session.execute(sql, {'email': email, 'admin_name':username, 'admin_password':hashlib.sha256(password.encode('utf-8')).hexdigest()})
                 db.session.commit()
                 return jsonify({'status': 'success'})
