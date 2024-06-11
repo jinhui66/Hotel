@@ -81,11 +81,11 @@ def register_action():
     else:
         type = request.form.get('type')
         form = RegisterForm(request.form)
-        print(form.username.data)
+        # print(form.username.data)
         if form.validate():
             email = form.email.data
             username = form.username.data
-            print(username)
+            # print(username)
             password = form.password.data
             if type == 'user':
                 # user = User(email=email,user_name=username,user_password=hashlib.sha256(password.encode('utf-8')).hexdigest())
