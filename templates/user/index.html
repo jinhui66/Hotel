@@ -1,0 +1,243 @@
+{% extends 'base.html' %}
+{% block title %}
+用户页面
+{% endblock %}
+{% block style %}
+<link rel='stylesheet' href='{{url_for('static',filename='/css/user.css')}}'>
+{% endblock %}
+
+{% block body %}
+    <div class="welcome">用户 {{user.user_name}},欢迎登入！
+
+    <hr>
+
+
+    <div class="form-container">
+        <button type="button" onclick="">导入表格</button>
+        <button type="button" onclick="resetTable()">重置表格</button>
+        <button type="button" onclick="clearTable()">清空表格</button>
+        <button type="button" onclick="saveTable()">保存表格</button>
+    </div>
+
+    <table class="main" contenteditable="true">
+        <tr class="center" contenteditable="false" >
+            <th>编号</th>
+            <th>名称</th>
+            <th>属性一</th>
+            <th>属性二</th>
+            <th>属性三</th>
+            <th>属性四</th>
+            <th>操作</th>
+        </tr>
+
+        <tr class="center">
+            <td>1</td>
+            <td>2</td>
+            <td>3</td>
+            <td>4</td>
+            <td>5</td>
+            <td>6</td>
+            <td><button class="delete-btn" onclick="deleteRow(this)">删除</button></td>
+        </tr>
+
+        {% for result in results %}
+            <tr class="center">
+                <td id = '{{result.InfoID}}'>{{result.InfoID}}</td>
+                <td>{{result.InfoContent}}</td>
+                <td>{{result.InfoTime}}</td>
+                <td>{{result.InfoLocation}}</td>
+                <td>{{result.DormManagerID}}</td>
+                <td>{{result.CheckNo}}</td>
+                <td><button class="delete-btn" onclick="deleteRow(this)">删除</button></td>
+            </tr>
+        {% endfor %}
+    </table>
+
+    <div class="form-container">
+        <input type="text" placeholder="输入查询关键字">
+        <button type="button" onclick="">查询</button>
+        <form id="dataForm">
+            <input type="text" id="id" placeholder="编号">
+            <input type="text" id="name" placeholder="名称">
+            <input type="text" id="attribute1" placeholder="属性一">
+            <input type="text" id="attribute2" placeholder="属性二">
+            <input type="text" id="attribute3" placeholder="属性三">
+            <input type="text" id="attribute4" placeholder="属性四">
+            <button type="button" onclick="addRow()">添加</button>
+        </form>
+    </div>
+
+    <script>
+
+        function addRow() {
+            var id = document.getElementById('id').value;
+            var name = document.getElementById('name').value;
+            var attribute1 = document.getElementById('attribute1').value;
+            var attribute2 = document.getElementById('attribute2').value;
+            var attribute3 = document.getElementById('attribute3').value;
+            var attribute4 = document.getElementById('attribute4').value;
+
+            fetch('/add_action', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({id: id,name: name, attribute1: attribute1, attribute2: attribute2, attribute3: attribute3, attribute4: attribute4})
+            })
+            .then(response => response.json())
+            .then(data => {
+            if (data.status == 'success') {
+                var table = document.querySelector('.main');
+                var newRow = table.insertRow();
+
+                var cell1 = newRow.insertCell(0);
+                var cell2 = newRow.insertCell(1);
+                var cell3 = newRow.insertCell(2);
+                var cell4 = newRow.insertCell(3);
+                var cell5 = newRow.insertCell(4);
+                var cell6 = newRow.insertCell(5);
+                var cell7 = newRow.insertCell(6);
+                cell1.innerHTML = id;
+                cell2.innerHTML = name;
+                cell3.innerHTML = attribute1;
+                cell4.innerHTML = attribute2;
+                cell5.innerHTML = attribute3;
+
+                cell6.innerHTML = attribute4;
+                cell7.innerHTML = '<button class="delete-btn" onclick="deleteRow(this)">删除</button>';
+
+
+                // Make cells editable and center-align
+                cell1.contentEditable = 'true';
+                cell2.contentEditable = 'true';
+                cell3.contentEditable = 'true';
+                cell4.contentEditable = 'true';
+                cell5.contentEditable = 'true';
+                cell6.contentEditable = 'true';
+                cell1.style.textAlign = 'center';
+                cell2.style.textAlign = 'center';
+                cell3.style.textAlign = 'center';
+                cell4.style.textAlign = 'center';
+                cell5.style.textAlign = 'center';
+                cell6.style.textAlign = 'center';
+                cell7.style.textAlign = 'center';
+                // Clear input fields
+                document.getElementById('id').value = '';
+                document.getElementById('name').value = '';
+                document.getElementById('attribute1').value = '';
+                document.getElementById('attribute2').value = '';
+                document.getElementById('attribute3').value = '';
+                document.getElementById('attribute4').value = '';
+                alert('添加成功');
+            } else {
+                alert('添加失败');
+            }
+            })
+            .catch(error => {
+                alert('程序出错');
+            });
+
+        }
+
+        function deleteRow(btn) {
+            var row = btn.parentNode.parentNode;
+
+            var InfoIDTd = row.querySelector('td:first-child'); // 或者使用 'td:nth-child(1)'
+            var InfoID = InfoIDTd ? InfoIDTd.textContent.trim() : null; // 获取文本内容并去除前后空格
+
+
+            fetch('/delete_action', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({InfoID: InfoID})
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status == 'success') {
+                    row.parentNode.removeChild(row);
+                }else{
+                    alert('删除失败');
+                }
+            })
+            .catch(error =>{
+                alert('程序出错');
+            })
+
+
+        }
+
+        function saveTable() {
+            var table = document.querySelector('.main');
+            var rows = table.rows;
+            var data = [];
+
+            for (var i = 1; i < rows.length; i++) {
+                var cells = rows[i].cells;
+                var rowData = {
+                    id: cells[0].innerText,
+                    name: cells[1].innerText,
+                    attribute1: cells[2].innerText,
+                    attribute2: cells[3].innerText,
+                    attribute3: cells[4].innerText
+                };
+                data.push(rowData);
+            }
+            // Save the data to local storage (for example)
+            // localStorage.setItem('tableData', JSON.stringify(data));
+            alert('表格数据已保存！');
+        }
+
+        function clearTable() {
+            localStorage.removeItem('tableData');
+            var table = document.querySelector('.main');
+
+            fetch('/clearTable_action', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status == 'success') {
+                    // Keep the header row
+                    while (table.rows.length > 1) {
+                        table.deleteRow(1);
+                    }
+                }else{
+                    alert('清除失败');
+                }
+            })
+            .catch(error =>{
+                alert('程序出错');
+            })
+
+        }
+
+        function resetTable(){
+
+            fetch('/resetTable_action',{
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status == 'success') {
+                    window.location.href = '/menu'
+
+
+                }else{
+                    alert('重置失败');
+                }
+
+            })
+            .catch(error => {
+                alert('程序出错');
+            })
+        }
+    </script>
+{% endblock %}
