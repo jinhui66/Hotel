@@ -47,7 +47,7 @@ class RegisterForm(wtforms.Form):
             print(captcha_model[0])
 
             if captcha_model[0] == 0:
-                raise wtforms.ValidationError(message="邮箱或验证码错误！")
+                raise wtforms.ValidationError(message="验证码错误！")
             connection.commit()
 
 class ForgotForm(wtforms.Form):
@@ -88,7 +88,7 @@ class ForgotForm(wtforms.Form):
             print(captcha_model[0])
 
             if captcha_model[0] == 0:
-                raise wtforms.ValidationError(message="邮箱或验证码错误！")
+                raise wtforms.ValidationError(message="验证码错误！")
             connection.commit()
 
 

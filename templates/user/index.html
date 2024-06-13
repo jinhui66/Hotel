@@ -11,14 +11,6 @@
 
     <hr>
 
-
-    <div class="form-container">
-        <button type="button" onclick="">导入表格</button>
-        <button type="button" onclick="resetTable()">重置表格</button>
-        <button type="button" onclick="clearTable()">清空表格</button>
-        <button type="button" onclick="saveTable()">保存表格</button>
-    </div>
-
     <table class="main" contenteditable="true">
         <tr class="center" contenteditable="false" >
             <th>编号</th>
@@ -168,76 +160,5 @@
 
         }
 
-        function saveTable() {
-            var table = document.querySelector('.main');
-            var rows = table.rows;
-            var data = [];
-
-            for (var i = 1; i < rows.length; i++) {
-                var cells = rows[i].cells;
-                var rowData = {
-                    id: cells[0].innerText,
-                    name: cells[1].innerText,
-                    attribute1: cells[2].innerText,
-                    attribute2: cells[3].innerText,
-                    attribute3: cells[4].innerText
-                };
-                data.push(rowData);
-            }
-            // Save the data to local storage (for example)
-            // localStorage.setItem('tableData', JSON.stringify(data));
-            alert('表格数据已保存！');
-        }
-
-        function clearTable() {
-            localStorage.removeItem('tableData');
-            var table = document.querySelector('.main');
-
-            fetch('/clearTable_action', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.status == 'success') {
-                    // Keep the header row
-                    while (table.rows.length > 1) {
-                        table.deleteRow(1);
-                    }
-                }else{
-                    alert('清除失败');
-                }
-            })
-            .catch(error =>{
-                alert('程序出错');
-            })
-
-        }
-
-        function resetTable(){
-
-            fetch('/resetTable_action',{
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.status == 'success') {
-                    window.location.href = '/menu'
-
-
-                }else{
-                    alert('重置失败');
-                }
-
-            })
-            .catch(error => {
-                alert('程序出错');
-            })
-        }
     </script>
 {% endblock %}
