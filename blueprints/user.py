@@ -10,3 +10,11 @@ import os
 import time
 
 bp = Blueprint('user',__name__,url_prefix="/")
+
+@bp.route('/user',methods=['GET','POST'])
+def user():
+
+    sql = text('select * from User')
+    results = db.session.execute(sql)
+
+    return render_template('user/index.html', results=results)

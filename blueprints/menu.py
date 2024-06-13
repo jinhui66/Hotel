@@ -16,7 +16,7 @@ def menu():
     if not session.get('user_id'):
         return redirect('login')
     elif session['type'] == 'user':
-        return render_template('user/index.html')
+        return redirect('/user')
     elif session['type'] == 'admin':
         return render_template('room/header.html')
 

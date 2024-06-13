@@ -8,8 +8,6 @@ from blueprints.email import bp as email_bp
 from blueprints.room import bp as room_bp
 from blueprints.user import bp as user_bp
 from sqlalchemy import text
-# import torch
-#
 
 # 启动
 app = Flask(__name__)
@@ -18,8 +16,8 @@ app.template_folder = 'templates'
 # 配置
 app.config.from_object(config)
 
-# 默认的静态文件夹仍然是 'static'
-app.static_folder = 'static'  # 可以省略
+# 默认的静态文件夹仍然是 'static' 可以省略
+app.static_folder = 'static'
 
 db.init_app(app)
 mail.init_app(app)
@@ -32,7 +30,7 @@ app.register_blueprint(email_bp)
 app.register_blueprint(room_bp)
 app.register_blueprint(user_bp)
 
-# # 建表
+# 建表
 # with app.app_context():
 #     db.create_all()
 
