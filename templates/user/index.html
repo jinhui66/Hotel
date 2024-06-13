@@ -7,43 +7,33 @@
 {% endblock %}
 
 {% block body %}
-    <div class="welcome">用户 {{user.user_name}},欢迎登入！
-
-    <hr>
+    <div class="welcome">
+        用户 {{user.user_name}}，欢迎！
+    </div>
 
     <table class="main" contenteditable="true">
         <tr class="center" contenteditable="false" >
-            <th>编号</th>
-            <th>名称</th>
-            <th>属性一</th>
-            <th>属性二</th>
-            <th>属性三</th>
-            <th>属性四</th>
-            <th>操作</th>
+            <th>房间类型ID</th>
+            <th>房间类型名</th>
+            <th>房间单价</th>
         </tr>
 
         <tr class="center">
-            <td>1</td>
-            <td>2</td>
-            <td>3</td>
-            <td>4</td>
-            <td>5</td>
-            <td>6</td>
-            <td><button class="delete-btn" onclick="deleteRow(this)">删除</button></td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
         </tr>
 
         {% for result in results %}
             <tr class="center">
-                <td id = '{{result.InfoID}}'>{{result.InfoID}}</td>
-                <td>{{result.InfoContent}}</td>
-                <td>{{result.InfoTime}}</td>
-                <td>{{result.InfoLocation}}</td>
-                <td>{{result.DormManagerID}}</td>
-                <td>{{result.CheckNo}}</td>
-                <td><button class="delete-btn" onclick="deleteRow(this)">删除</button></td>
+                <td>{{result.roomType_id}}</td>
+                <td>{{result.roomType_name}}</td>
+                <td>{{result.roomType_price}}</td>
             </tr>
         {% endfor %}
     </table>
+
+    <!-- 输入一行提示 -->
 
     <div class="form-container">
         <input type="text" placeholder="输入查询关键字">
@@ -60,7 +50,6 @@
     </div>
 
     <script>
-
         function addRow() {
             var id = document.getElementById('id').value;
             var name = document.getElementById('name').value;
