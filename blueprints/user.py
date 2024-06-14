@@ -42,8 +42,6 @@ def add_action():
         print(f"入住天数: {book_liveDays}")
         print(f"房间类型: {roomType_id}")
 
-        sql = text('CALL', )
-
         # return redirect(url_for('user.user'))
 
     return jsonify({'status':'success'})
