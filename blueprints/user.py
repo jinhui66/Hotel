@@ -14,7 +14,7 @@ bp = Blueprint('user',__name__,url_prefix="/")
 @bp.route('/user',methods=['GET','POST'])
 def user():
 
-    sql = text('select * from RoomType')
+    sql = text('select * from AvailableRooms')
     results = db.session.execute(sql)
 
     return render_template('user/index.html', results=results)

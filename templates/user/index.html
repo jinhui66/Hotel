@@ -13,22 +13,22 @@
 
     <table class="main" contenteditable="true">
         <tr class="center" contenteditable="false" >
-            <th>房间类型ID</th>
-            <th>房间类型名</th>
+            <th>房间类型</th>
             <th>房间单价</th>
+            <th>空闲房间数</th>
         </tr>
 
-        <tr class="center">
+        <!-- <tr class="center">
             <td>0</td>
             <td>0</td>
             <td>0</td>
-        </tr>
-
+        </tr> -->
+        
         {% for result in results %}
             <tr class="center">
-                <td>{{result.roomType_id}}</td>
-                <td>{{result.roomType_name}}</td>
-                <td>{{result.roomType_price}}</td>
+                <td>{{result.房间名}}</td>
+                <td>{{result.房间单价}}</td>
+                <td>{{result.空闲房间数}}</td>
             </tr>
         {% endfor %}
     </table>
@@ -36,7 +36,7 @@
     <!-- 输入一行提示 -->
 
     <div class="form-container">
-        <input type="text" placeholder="输入查询关键字">
+        <input type="text" placeholder="输入房间类型 查询房间状态">
         <button type="button" onclick="">查询</button>
         <form id="dataForm">
             <input type="text" id="id" placeholder="编号">
