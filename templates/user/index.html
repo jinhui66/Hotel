@@ -8,7 +8,7 @@
 
 {% block body %}
     <div class="welcome">
-        用户 {{user.user_name}}，欢迎！
+        用户 {{user.user_name}}，欢迎！今日房价如下！
     </div>
 
     <table class="main" contenteditable="true">
@@ -33,11 +33,28 @@
         {% endfor %}
     </table>
 
-    <!-- 输入一行提示 -->
+    <hr>
+
+    <div class="prompt">
+        功能一：新增预订信息
+    </div>
 
     <div class="form-container">
-        <input type="text" placeholder="输入房间类型 查询房间状态">
-        <button type="button" onclick="">查询</button>
+        <form id="dataForm">
+            <input type="text" id="book_inTime" placeholder="入住时间">
+            <input type="text" id="book_liveDays" placeholder="名称">
+            <input type="text" id="roomType_id" placeholder="房间类型">
+            <button type="button" onclick="addRow()">添加</button>
+        </form>
+    </div>
+
+    <hr>
+
+    <div class="prompt">
+        功能二：办理入住
+
+    <div class="form-container">
+        <button type="button" onclick="">查询预订信息</button>
         <form id="dataForm">
             <input type="text" id="id" placeholder="编号">
             <input type="text" id="name" placeholder="名称">
@@ -51,64 +68,21 @@
 
     <script>
         function addRow() {
-            var id = document.getElementById('id').value;
-            var name = document.getElementById('name').value;
-            var attribute1 = document.getElementById('attribute1').value;
-            var attribute2 = document.getElementById('attribute2').value;
-            var attribute3 = document.getElementById('attribute3').value;
-            var attribute4 = document.getElementById('attribute4').value;
+            var book_inTime = document.getElementById('book_inTime').value;
+            var book_liveDays = document.getElementById('book_liveDays').value;
+            var roomType_id = document.getElementById('roomType_id').value;
+
 
             fetch('/add_action', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({id: id,name: name, attribute1: attribute1, attribute2: attribute2, attribute3: attribute3, attribute4: attribute4})
+                body: JSON.stringify({book_inTime: book_inTime,book_liveDays: book_liveDays, roomType_id: roomType_id})
             })
             .then(response => response.json())
             .then(data => {
             if (data.status == 'success') {
-                var table = document.querySelector('.main');
-                var newRow = table.insertRow();
-
-                var cell1 = newRow.insertCell(0);
-                var cell2 = newRow.insertCell(1);
-                var cell3 = newRow.insertCell(2);
-                var cell4 = newRow.insertCell(3);
-                var cell5 = newRow.insertCell(4);
-                var cell6 = newRow.insertCell(5);
-                var cell7 = newRow.insertCell(6);
-                cell1.innerHTML = id;
-                cell2.innerHTML = name;
-                cell3.innerHTML = attribute1;
-                cell4.innerHTML = attribute2;
-                cell5.innerHTML = attribute3;
-
-                cell6.innerHTML = attribute4;
-                cell7.innerHTML = '<button class="delete-btn" onclick="deleteRow(this)">删除</button>';
-
-
-                // Make cells editable and center-align
-                cell1.contentEditable = 'true';
-                cell2.contentEditable = 'true';
-                cell3.contentEditable = 'true';
-                cell4.contentEditable = 'true';
-                cell5.contentEditable = 'true';
-                cell6.contentEditable = 'true';
-                cell1.style.textAlign = 'center';
-                cell2.style.textAlign = 'center';
-                cell3.style.textAlign = 'center';
-                cell4.style.textAlign = 'center';
-                cell5.style.textAlign = 'center';
-                cell6.style.textAlign = 'center';
-                cell7.style.textAlign = 'center';
-                // Clear input fields
-                document.getElementById('id').value = '';
-                document.getElementById('name').value = '';
-                document.getElementById('attribute1').value = '';
-                document.getElementById('attribute2').value = '';
-                document.getElementById('attribute3').value = '';
-                document.getElementById('attribute4').value = '';
                 alert('添加成功');
             } else {
                 alert('添加失败');
@@ -120,34 +94,34 @@
 
         }
 
-        function deleteRow(btn) {
-            var row = btn.parentNode.parentNode;
+        // function deleteRow(btn) {
+        //     var row = btn.parentNode.parentNode;
 
-            var InfoIDTd = row.querySelector('td:first-child'); // 或者使用 'td:nth-child(1)'
-            var InfoID = InfoIDTd ? InfoIDTd.textContent.trim() : null; // 获取文本内容并去除前后空格
-
-
-            fetch('/delete_action', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({InfoID: InfoID})
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.status == 'success') {
-                    row.parentNode.removeChild(row);
-                }else{
-                    alert('删除失败');
-                }
-            })
-            .catch(error =>{
-                alert('程序出错');
-            })
+        //     var InfoIDTd = row.querySelector('td:first-child'); // 或者使用 'td:nth-child(1)'
+        //     var InfoID = InfoIDTd ? InfoIDTd.textContent.trim() : null; // 获取文本内容并去除前后空格
 
 
-        }
+        //     fetch('/delete_action', {
+        //         method: 'POST',
+        //         headers: {
+        //             'Content-Type': 'application/json'
+        //         },
+        //         body: JSON.stringify({InfoID: InfoID})
+        //     })
+        //     .then(response => response.json())
+        //     .then(data => {
+        //         if (data.status == 'success') {
+        //             row.parentNode.removeChild(row);
+        //         }else{
+        //             alert('删除失败');
+        //         }
+        //     })
+        //     .catch(error =>{
+        //         alert('程序出错');
+        //     })
+
+
+        // }
 
     </script>
 {% endblock %}
