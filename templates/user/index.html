@@ -13,19 +13,15 @@
 
     <table class="main" contenteditable="true">
         <tr class="center" contenteditable="false" >
+            <th>房间类型id</th>
             <th>房间类型</th>
             <th>房间单价</th>
             <th>空闲房间数</th>
         </tr>
-
-        <!-- <tr class="center">
-            <td>0</td>
-            <td>0</td>
-            <td>0</td>
-        </tr> -->
         
         {% for result in results %}
             <tr class="center">
+                <td>{{result.房间类型ID}}</td>
                 <td>{{result.房间名}}</td>
                 <td>{{result.房间单价}}</td>
                 <td>{{result.空闲房间数}}</td>
@@ -38,11 +34,14 @@
     <div class="prompt">
         功能一：新增预订信息
     </div>
+    <p>     </p>
+    <p> 功能介绍：输入预订信息，包括预计入住时间、预计入住天数、房间类型。 </p>
+    <p> 功能要求：房间类型必须存在，预计入住时间不得小于当前时间。 </p>
 
     <div class="form-container">
         <form id="dataForm">
-            <input type="text" id="book_inTime" placeholder="入住时间">
-            <input type="text" id="book_liveDays" placeholder="名称">
+            <input type="text" id="book_inTime" placeholder="预计入住时间">
+            <input type="text" id="book_liveDays" placeholder="预计入住天数">
             <input type="text" id="roomType_id" placeholder="房间类型">
             <button type="button" onclick="addRow()">添加</button>
         </form>
@@ -84,7 +83,8 @@
             .then(data => {
             if (data.status == 'success') {
                 alert('添加成功');
-            } else {
+            }
+            else {
                 alert('添加失败');
             }
             })
@@ -93,35 +93,6 @@
             });
 
         }
-
-        // function deleteRow(btn) {
-        //     var row = btn.parentNode.parentNode;
-
-        //     var InfoIDTd = row.querySelector('td:first-child'); // 或者使用 'td:nth-child(1)'
-        //     var InfoID = InfoIDTd ? InfoIDTd.textContent.trim() : null; // 获取文本内容并去除前后空格
-
-
-        //     fetch('/delete_action', {
-        //         method: 'POST',
-        //         headers: {
-        //             'Content-Type': 'application/json'
-        //         },
-        //         body: JSON.stringify({InfoID: InfoID})
-        //     })
-        //     .then(response => response.json())
-        //     .then(data => {
-        //         if (data.status == 'success') {
-        //             row.parentNode.removeChild(row);
-        //         }else{
-        //             alert('删除失败');
-        //         }
-        //     })
-        //     .catch(error =>{
-        //         alert('程序出错');
-        //     })
-
-
-        // }
 
     </script>
 {% endblock %}
