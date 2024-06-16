@@ -32,7 +32,7 @@
     <hr>
 
     <div class="prompt">
-        功能一：新增预订信息
+        功能一：办理预订
     </div>
     <p>     </p>
     <p> 功能介绍：输入预订信息，包括预计入住时间、预计入住天数、房间类型。 </p>
@@ -42,8 +42,8 @@
         <form id="dataForm">
             <input type="text" id="book_inTime" placeholder="预计入住时间">
             <input type="text" id="book_liveDays" placeholder="预计入住天数">
-            <input type="text" id="roomType_id" placeholder="房间类型">
-            <button type="button" onclick="addRow()">添加</button>
+            <input type="text" id="roomType_id" placeholder="房间类型编号">
+            <button type="button" onclick="addBook()">办理</button>
         </form>
     </div>
 
@@ -51,9 +51,24 @@
 
     <div class="prompt">
         功能二：办理入住
+    </div>
+    <p>     </p>
+    <p> 功能介绍：根据预订信息列表，选择一条预订信息办理入住。 </p>
 
     <div class="form-container">
-        <button type="button" onclick="">查询预订信息</button>
+        <table class="main" contenteditable="true" id="bookTable">
+            <tr class="center" contenteditable="false" >
+                <th>预订编号</th>
+                <th>预计入住时间</th>
+                <th>预计入住天数</th>
+                <th>预订房间号</th>
+                <th></th>
+            </tr>
+        </table>
+        <button type="button" onclick="queryBook()">查询预订信息</button>
+    </div>
+
+    <!-- <div class="form-container">
         <form id="dataForm">
             <input type="text" id="id" placeholder="编号">
             <input type="text" id="name" placeholder="名称">
@@ -63,10 +78,10 @@
             <input type="text" id="attribute4" placeholder="属性四">
             <button type="button" onclick="addRow()">添加</button>
         </form>
-    </div>
+    </div> -->
 
     <script>
-        function addRow() {
+        function addBook() {
             // 获取HTML表单中的输入值
             var book_inTime = document.getElementById('book_inTime').value;
             var book_liveDays = document.getElementById('book_liveDays').value;
@@ -83,11 +98,13 @@
             .then(response => response.json())
             .then(data => {
                 if (data.status == 'success') {
-                    var msg = '预订失败！';
+                    var msg = '';
                     if(data.results == 0){
                         msg = '预订成功！';
+                        msg += '\n预订房间号：' + data.availableRoomId;
                     }
                     else{
+                        msg = '预订失败！';
                         if(data.results & 1){
                             msg += '\n错误1：目前没有对应类型的空闲房间！';
                         }
@@ -95,19 +112,108 @@
                             msg += '\n错误2：预计入住时间不得小于当前时间！';
                         }
                     }
-                    msg += '\n' + data.results;
-                    msg += '\n' + data.availableRoomId;
                     alert(msg);
                 }
                 else {
-                    alert('添加失败');
+                    var msg = '出现错误！';
+                    msg += '\n错误信息：' + data.errorMessage;
+                    alert(msg);
                 }
             })
             .catch(error => {
-                alert('程序出错');
+                alert('错误信息：' + error);
             });
-
         }
+    </script>
 
+    <script>
+        function queryBook() {
+            fetch('/queryBook', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({})
+            })
+            .then(response => response.json())
+            .then(data => {
+                if(data.status == 'success'){
+                    alert('查询成功！');
+                    var table = document.getElementById('bookTable');
+                    // 清空表格
+                    table.innerHTML = table.rows[0].innerHTML;
+                    // 逐一加入data.results中的每一条记录
+                    for (var i = 0; i < data.results.length; i++) {
+                        var result = data.results[i];
+                        var row = document.createElement('tr');
+
+                        var cell = document.createElement('td');
+                        cell.textContent = result.book_id;
+                        row.appendChild(cell);
+
+                        cell = document.createElement('td');
+                        cell.textContent = result.book_inTime;
+                        row.appendChild(cell);
+
+                        cell = document.createElement('td');
+                        cell.textContent = result.book_liveDays;
+                        row.appendChild(cell);
+
+                        cell = document.createElement('td');
+                        cell.textContent = result.room_id;
+                        row.appendChild(cell);
+
+                        cell = document.createElement('td');
+                        var button = document.createElement('button');
+                        button.textContent = '办理入住';
+                        button.onclick = function(){
+                            addLive(result.book_id);
+                        }
+                        cell.appendChild(button);
+                        row.appendChild(cell);
+
+                        // 将按钮的点击事件绑定到addLive上，传入预订编号
+                        // 创建一个新的作用域，以便在创建按钮时捕获 result.book_id 的当前值
+                        button.onclick = (function(book_id) {
+                            return function() {
+                                addLive(book_id);
+                            };
+                        })(result.book_id);
+
+                        // 将新的表格行添加到表格中
+                        table.appendChild(row);
+                    }
+                }
+            })
+            .catch(error => {
+                alert('错误信息：' + error);
+            });
+        }
+    </script>
+
+    <script>
+        function addLive(book_id) {
+            fetch('/addLive', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({book_id: book_id})
+            })
+            .then(response => response.json())
+            .then(data => {
+                if(data.status == 'success'){
+                    var msg = '办理成功';
+                    msg += '\n订单编号：' + data.results;
+                    alert(msg);
+                }
+                else{
+                    alert('办理失败！'+data.errorMessage);
+                }
+            })
+            .catch(error => {
+                alert('错误信息：' + error);
+            });
+        }
     </script>
 {% endblock %}
