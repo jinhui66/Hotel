@@ -67,26 +67,41 @@
 
     <script>
         function addRow() {
+            // 获取HTML表单中的输入值
             var book_inTime = document.getElementById('book_inTime').value;
             var book_liveDays = document.getElementById('book_liveDays').value;
             var roomType_id = document.getElementById('roomType_id').value;
 
-
+            // 使用fetch API向/add_action发送POST请求。请求头部声明了Content-Type为application/json，并将收集到的数据转换为JSON字符串放在请求体中。
             fetch('/add_action', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({book_inTime: book_inTime,book_liveDays: book_liveDays, roomType_id: roomType_id})
+                body: JSON.stringify({book_inTime: book_inTime, book_liveDays: book_liveDays, roomType_id: roomType_id})
             })
             .then(response => response.json())
             .then(data => {
-            if (data.status == 'success') {
-                alert('添加成功');
-            }
-            else {
-                alert('添加失败');
-            }
+                if (data.status == 'success') {
+                    var msg = '预订失败！';
+                    if(data.results == 0){
+                        msg = '预订成功！';
+                    }
+                    else{
+                        if(data.results & 1){
+                            msg += '\n错误1：目前没有对应类型的空闲房间！';
+                        }
+                        if(data.results & 2){
+                            msg += '\n错误2：预计入住时间不得小于当前时间！';
+                        }
+                    }
+                    msg += '\n' + data.results;
+                    msg += '\n' + data.availableRoomId;
+                    alert(msg);
+                }
+                else {
+                    alert('添加失败');
+                }
             })
             .catch(error => {
                 alert('程序出错');

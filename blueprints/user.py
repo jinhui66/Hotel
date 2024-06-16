@@ -25,14 +25,14 @@ def user():
         print(f"入住天数: {book_liveDays}")
         print(f"房间类型: {roomType_id}")
 
-        # return redirect(url_for('user.user'))
-
-
     return render_template('user/index.html', results=results)
 
+# 定义路由，支持GET和POST请求
 @bp.route('/add_action',methods=['GET','POST'])
 def add_action():
+    # 如果是POST请求
     if request.method == 'POST':
+        # 从请求体中读取并解析JSON数据，然后从中提取book_inTime、book_liveDays、和roomType_id三个字段
         data = request.get_json()
         book_inTime = str(data.get('book_inTime'))
         book_liveDays = str(data.get('book_liveDays'))
@@ -42,8 +42,28 @@ def add_action():
         print(f"入住天数: {book_liveDays}")
         print(f"房间类型: {roomType_id}")
 
-        data = {
-            'status': 'success'
+        # 服务器返回一个JSON响应，表明操作成功
+        sqlCommand = text(
+            'CALL BookInsertProcedure(:user_id, :book_inTime, :book_liveDays, :roomType_id, @result, @availableRoomId)'
+        )
+        sqlParams = {
+            'user_id': session.get('user_id'),
+            'book_inTime': book_inTime,
+            'book_liveDays': book_liveDays,
+            'roomType_id': roomType_id
+        }
+        db.session.execute(sqlCommand, sqlParams)
+        # 在 SQLAlchemy 中，需要明确地调用 session.commit() 来提交更改。
+        db.session.commit()
+        results = db.session.execute(text('SELECT @result')).scalar()
+        availableRoomId = db.session.execute(text('SELECT @availableRoomId')).scalar()
+        returnData = {
+            'status': 'success',
+            'book_inTime': book_inTime,
+            'book_liveDays': book_liveDays,
+            'roomType_id': roomType_id,
+            'results': results,
+            'availableRoomId': availableRoomId
         }
 
-    return jsonify(data)
+    return jsonify(returnData)
