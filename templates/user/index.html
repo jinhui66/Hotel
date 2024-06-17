@@ -18,9 +18,9 @@
             <th>房间单价</th>
             <th>空闲房间数</th>
         </tr>
-        
+
         {% for result in results %}
-            <tr class="center">
+            <tr id = '{{result.房间类型ID}}' class="center">
                 <td>{{result.房间类型ID}}</td>
                 <td>{{result.房间名}}</td>
                 <td>{{result.房间单价}}</td>
@@ -99,9 +99,16 @@
             .then(data => {
                 if (data.status == 'success') {
                     var msg = '';
+
                     if(data.results == 0){
+                        var id = data.roomType_id;
                         msg = '预订成功！';
                         msg += '\n预订房间号：' + data.availableRoomId;
+                         // 更新页面上的空闲房间数
+                        var row = document.getElementById(id);
+                        var cells = row.getElementsByTagName('td');
+                        var availableRooms = parseInt(cells[3].innerText);
+                        cells[3].innerText = availableRooms - 1;
                     }
                     else{
                         msg = '预订失败！';

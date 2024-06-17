@@ -55,9 +55,10 @@ def add_action():
         }
         try:
             db.session.execute(sqlCommand, sqlParams)
-            db.session.commit()
             result1 = db.session.execute(text('SELECT @result1')).scalar()
             availableRoomId = db.session.execute(text('SELECT @availableRoomId')).scalar()
+            db.session.commit()
+
         except StatementError as e:
             print('Error: ' + str(e))
             returnData = {
