@@ -12,22 +12,6 @@ import time
 
 bp = Blueprint('user',__name__,url_prefix="/")
 
-@bp.route('/user',methods=['GET','POST'])
-def user():
-
-    sql = text('SELECT * FROM AvailableRooms')
-    results = db.session.execute(sql)
-    # if request.method == 'POST':
-    #     book_inTime = request.form.get('book_inTime')
-    #     book_liveDays = request.form.get('book_liveDays')
-    #     roomType_id = request.form.get('roomType_id')
-
-    #     print(f"入住时间: {book_inTime}")
-    #     print(f"入住天数: {book_liveDays}")
-    #     print(f"房间类型: {roomType_id}")
-
-    return render_template('user/index.html', results=results)
-
 # 定义路由，支持GET和POST请求
 @bp.route('/add_action',methods=['GET','POST'])
 def add_action():

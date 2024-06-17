@@ -16,7 +16,9 @@ def menu():
     if not session.get('user_id'):
         return redirect('login')
     elif session['type'] == 'user':
-        return redirect('/user')
+        sql = text('SELECT * FROM AvailableRooms')
+        results = db.session.execute(sql)
+        return render_template('user/index.html', results=results)
     elif session['type'] == 'admin':
         return render_template('room/header.html')
 
