@@ -117,8 +117,8 @@ def addLive():
             'book_id': book_id
         }
         db.session.execute(sqlCommand, sqlParams)
-        db.session.commit()
         results = db.session.execute(text('SELECT @result')).scalar()
+        db.session.commit()
         returnData = {
             'status': 'success',
             'results': results

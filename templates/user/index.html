@@ -65,6 +65,10 @@
                 <th></th>
             </tr>
         </table>
+        <!-- 隐藏bookTable -->
+        <script>
+            document.getElementById('bookTable').style.display = 'none';
+        </script>
         <button type="button" onclick="queryBook()">查询预订信息</button>
     </div>
 
@@ -190,6 +194,8 @@
                         // 将新的表格行添加到表格中
                         table.appendChild(row);
                     }
+                    // 显示bookTable
+                    document.getElementById('bookTable').style.display = 'table';
                 }
             })
             .catch(error => {
