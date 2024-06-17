@@ -181,11 +181,11 @@
 
                         // 将按钮的点击事件绑定到addLive上，传入预订编号
                         // 创建一个新的作用域，以便在创建按钮时捕获 result.book_id 的当前值
-                        button.onclick = (function(book_id) {
+                        button.onclick = (function(book_id, row) {
                             return function() {
-                                addLive(book_id);
+                                addLive(book_id, row);
                             };
-                        })(result.book_id);
+                        })(result.book_id, row);
 
                         // 将新的表格行添加到表格中
                         table.appendChild(row);
@@ -199,7 +199,7 @@
     </script>
 
     <script>
-        function addLive(book_id) {
+        function addLive(book_id, rowElement) {
             fetch('/addLive', {
                 method: 'POST',
                 headers: {
@@ -213,6 +213,7 @@
                     var msg = '办理成功';
                     msg += '\n订单编号：' + data.results;
                     alert(msg);
+                    rowElement.remove();
                 }
                 else{
                     alert('办理失败！'+data.errorMessage);
